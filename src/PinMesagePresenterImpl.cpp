@@ -1,25 +1,20 @@
 #include "PinMessagePresenterImpl.h"
 
-std::string PinMessagePresenterImpl::cardReadSuccess(const std::string& accountNum) {
-    return "Card read successfully: " + accountNum;
-}
-
-std::string PinMessagePresenterImpl::cardReadFailure() {
-    return "Card read failed. Please try again.";
-}
-
-std::string PinMessagePresenterImpl::promptPinEntry() {
-    return "Please enter your PIN:";
-}
-
-std::string PinMessagePresenterImpl::pinSuccess() {
-    return "PIN correct. Access granted.";
-}
-
-std::string PinMessagePresenterImpl::pinFailure() {
-    return "Incorrect PIN. Try again.";
-}
-
-std::string PinMessagePresenterImpl::pinNotSet() {
-    return "PIN not set yet.";
+std::string PinMessagePresenterImpl::getMessage(PinMessageType type, const std::string& context) {
+    switch (type) {
+        case PinMessageType::CardReadSuccess:
+            return "Card read successfully: " + context;
+        case PinMessageType::CardReadFailure:
+            return "Card read failed. Please try again.";
+        case PinMessageType::PromptPinEntry:
+            return "Please enter your PIN:";
+        case PinMessageType::PinSuccess:
+            return "PIN correct. Access granted.";
+        case PinMessageType::PinFailure:
+            return "Incorrect PIN. Try again.";
+        case PinMessageType::PinNotSet:
+            return "PIN not set yet.";
+        default:
+            return "Unknown message.";
+    }
 }

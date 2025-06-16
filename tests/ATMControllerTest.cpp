@@ -7,6 +7,7 @@
 #include "Keypad.h"
 #include "PinMessagePresenter.h"
 #include "MessageServiceInterface.h"
+#include "PinMessageType.h"
 
 using ::testing::Return;
 
@@ -30,12 +31,7 @@ public:
 
 class MockPinMessagePresenter : public PinMessagePresenter {
 public:
-    MOCK_METHOD(std::string, cardReadSuccess, (const std::string&), (override));
-    MOCK_METHOD(std::string, cardReadFailure, (), (override));
-    MOCK_METHOD(std::string, promptPinEntry, (), (override));
-    MOCK_METHOD(std::string, pinSuccess, (), (override));
-    MOCK_METHOD(std::string, pinFailure, (), (override));
-    MOCK_METHOD(std::string, pinNotSet, (), (override));
+    MOCK_METHOD(std::string, getMessage, (PinMessageType, const std::string&), (override));
 };
 
 
@@ -58,18 +54,22 @@ TEST(ATMControllerTest, SuccessfulLoginFlow) {
 
     EXPECT_CALL(*messageService, showMessage("ATM System Started. Welcome! Please tap your card"));
     EXPECT_CALL(*reader, readCard()).WillOnce(Return(std::make_pair(true, "ACC123")));
-    EXPECT_CALL(*presenter, cardReadSuccess("ACC123")).WillOnce(Return("Card read successful: ACC123"));
+    EXPECT_CALL(*presenter, getMessage(PinMessageType::CardReadSuccess, "ACC123"))
+        .WillOnce(Return("Card read successful: ACC123"));
     EXPECT_CALL(*messageService, showMessage("Card read successful: ACC123"));
     EXPECT_CALL(*pinService, isPinSetup("ACC123")).WillOnce(Return(true));
-    EXPECT_CALL(*presenter, promptPinEntry()).WillOnce(Return("Please enter your PIN:"));
+    EXPECT_CALL(*presenter, getMessage(PinMessageType::PromptPinEntry, ""))
+        .WillOnce(Return("Please enter your PIN:"));
     EXPECT_CALL(*messageService, showMessage("Please enter your PIN:"));
     EXPECT_CALL(*keypad, getInput()).WillOnce(Return("1234"));
     EXPECT_CALL(*pinService, validatePin("ACC123", "1234")).WillOnce(Return(true));
-    EXPECT_CALL(*presenter, pinSuccess()).WillOnce(Return("PIN validation successful"));
+    EXPECT_CALL(*presenter, getMessage(PinMessageType::PinSuccess, ""))
+        .WillOnce(Return("PIN validation successful"));
     EXPECT_CALL(*messageService, showMessage("PIN validation successful"));
 
     controller.run();
 }
+
 
 TEST(ATMControllerTest, CardReadFails_ShowsFailureMessage) {
     auto reader = std::make_shared<MockCardReader>();
@@ -82,11 +82,13 @@ TEST(ATMControllerTest, CardReadFails_ShowsFailureMessage) {
 
     EXPECT_CALL(*messageService, showMessage("ATM System Started. Welcome! Please tap your card"));
     EXPECT_CALL(*reader, readCard()).WillOnce(Return(std::make_pair(false, "")));
-    EXPECT_CALL(*presenter, cardReadFailure()).WillOnce(Return("Card read failed. Please try again."));
+    EXPECT_CALL(*presenter, getMessage(PinMessageType::CardReadFailure, ""))
+        .WillOnce(Return("Card read failed. Please try again."));
     EXPECT_CALL(*messageService, showMessage("Card read failed. Please try again."));
 
     controller.run();
 }
+
 
 TEST(ATMControllerTest, PinNotSet_ShowsPinNotSetMessage) {
     auto reader = std::make_shared<MockCardReader>();
@@ -99,10 +101,12 @@ TEST(ATMControllerTest, PinNotSet_ShowsPinNotSetMessage) {
 
     EXPECT_CALL(*messageService, showMessage("ATM System Started. Welcome! Please tap your card"));
     EXPECT_CALL(*reader, readCard()).WillOnce(Return(std::make_pair(true, "ACC123")));
-    EXPECT_CALL(*presenter, cardReadSuccess("ACC123")).WillOnce(Return("Card read successfully: ACC123"));
+    EXPECT_CALL(*presenter, getMessage(PinMessageType::CardReadSuccess, "ACC123"))
+        .WillOnce(Return("Card read successfully: ACC123"));
     EXPECT_CALL(*messageService, showMessage("Card read successfully: ACC123"));
     EXPECT_CALL(*pinService, isPinSetup("ACC123")).WillOnce(Return(false));
-    EXPECT_CALL(*presenter, pinNotSet()).WillOnce(Return("PIN not set yet."));
+    EXPECT_CALL(*presenter, getMessage(PinMessageType::PinNotSet, ""))
+        .WillOnce(Return("PIN not set yet."));
     EXPECT_CALL(*messageService, showMessage("PIN not set yet."));
 
     controller.run();
@@ -119,14 +123,17 @@ TEST(ATMControllerTest, WrongPin_ShowsFailure) {
 
     EXPECT_CALL(*messageService, showMessage("ATM System Started. Welcome! Please tap your card"));
     EXPECT_CALL(*reader, readCard()).WillOnce(Return(std::make_pair(true, "ACC123")));
-    EXPECT_CALL(*presenter, cardReadSuccess("ACC123")).WillOnce(Return("Card read successfully: ACC123"));
+    EXPECT_CALL(*presenter, getMessage(PinMessageType::CardReadSuccess, "ACC123"))
+        .WillOnce(Return("Card read successfully: ACC123"));
     EXPECT_CALL(*messageService, showMessage("Card read successfully: ACC123"));
     EXPECT_CALL(*pinService, isPinSetup("ACC123")).WillOnce(Return(true));
-    EXPECT_CALL(*presenter, promptPinEntry()).WillOnce(Return("Please enter your PIN:"));
+    EXPECT_CALL(*presenter, getMessage(PinMessageType::PromptPinEntry, ""))
+        .WillOnce(Return("Please enter your PIN:"));
     EXPECT_CALL(*messageService, showMessage("Please enter your PIN:"));
     EXPECT_CALL(*keypad, getInput()).WillOnce(Return("0000"));
     EXPECT_CALL(*pinService, validatePin("ACC123", "0000")).WillOnce(Return(false));
-    EXPECT_CALL(*presenter, pinFailure()).WillOnce(Return("Incorrect PIN. Try again."));
+    EXPECT_CALL(*presenter, getMessage(PinMessageType::PinFailure, ""))
+        .WillOnce(Return("Incorrect PIN. Try again."));
     EXPECT_CALL(*messageService, showMessage("Incorrect PIN. Try again."));
 
     controller.run();

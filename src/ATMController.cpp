@@ -18,23 +18,24 @@ void ATMController::run() {
     auto [cardValid, accountNum] = reader_->readCard();
 
     if (cardValid) {
-        messageService_->showMessage(presenter_->cardReadSuccess(accountNum));
+        messageService_->showMessage(presenter_->getMessage(PinMessageType::CardReadSuccess, accountNum));
 
         if (pinService_->isPinSetup(accountNum)) {
-            messageService_->showMessage(presenter_->promptPinEntry());
+            messageService_->showMessage(presenter_->getMessage(PinMessageType::PromptPinEntry));
 
             std::string enteredPin = keypad_->getInput();
 
             if (pinService_->validatePin(accountNum, enteredPin)) {
-                messageService_->showMessage(presenter_->pinSuccess());
+                messageService_->showMessage(presenter_->getMessage(PinMessageType::PinSuccess));
             } else {
-                messageService_->showMessage(presenter_->pinFailure());
+                messageService_->showMessage(presenter_->getMessage(PinMessageType::PinFailure));
             }
         } else {
-            messageService_->showMessage(presenter_->pinNotSet());
+            messageService_->showMessage(presenter_->getMessage(PinMessageType::PinNotSet));
         }
     } else {
-        messageService_->showMessage(presenter_->cardReadFailure());
+        messageService_->showMessage(presenter_->getMessage(PinMessageType::CardReadFailure));
     }
 }
+
 
