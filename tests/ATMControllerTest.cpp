@@ -31,8 +31,9 @@ public:
 
 class MockPinMessagePresenter : public PinMessagePresenter {
 public:
-    MOCK_METHOD(std::string, getMessage, (PinMessageType, const std::string&), (override));
+    MOCK_METHOD(std::string, getMessage, (PinMessageType, const std::string&), (const, override));
 };
+
 
 
 class MockMessageService : public MessageServiceInterface {

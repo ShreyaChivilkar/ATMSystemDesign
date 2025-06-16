@@ -1,6 +1,6 @@
 #include "PinMessagePresenterImpl.h"
 
-std::string PinMessagePresenterImpl::getMessage(PinMessageType type, const std::string& context) {
+std::string PinMessagePresenterImpl::getMessage(PinMessageType type, const std::string& context) const {
     switch (type) {
         case PinMessageType::CardReadSuccess:
             return "Card read successfully: " + context;

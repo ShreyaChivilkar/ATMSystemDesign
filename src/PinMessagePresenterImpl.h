@@ -5,5 +5,5 @@
 
 class PinMessagePresenterImpl : public PinMessagePresenter {  
 public:
-    std::string getMessage(PinMessageType type, const std::string& context = "") override;
+    std::string getMessage(PinMessageType type, const std::string& context = "") const override;
 };
