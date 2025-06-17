@@ -8,6 +8,8 @@
 #include "PinService.h"
 #include "Keypad.h"
 #include "PinMessagePresenter.h"
+#include "ATMState.h"
+
 
 class ATMController {
 public:
