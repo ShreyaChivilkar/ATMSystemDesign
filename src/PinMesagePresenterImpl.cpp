@@ -28,6 +28,16 @@ std::string PinMessagePresenterImpl::getMessage(PinMessageType type, const std::
             return "Maximum retries exceeded. Please try again later.";
         case PinMessageType::PinNotSet:
             return "PIN not set yet.";
+        case PinMessageType::PromptPinSetup:
+            return "Please set your new 4-digit PIN:";
+        case PinMessageType::PromptPinConfirmation:
+            return "Please confirm your new PIN:";
+        case PinMessageType::PinMismatch:
+            return "PINs do not match. Please try again.";
+        case PinMessageType::PinSetupSuccess:
+            return "PIN setup successful. You may now proceed.";
+        case PinMessageType::PinSetupFailure:
+            return "PIN setup failed. Please contact support.";
         default:
             return "Unknown message.";
     }

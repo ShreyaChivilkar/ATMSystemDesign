@@ -21,8 +21,10 @@ public:
 
 class MockPinService : public PinService {
 public:
-    MOCK_METHOD(bool, isPinSetup, (const std::string&), (override));
-    MOCK_METHOD(bool, validatePin, (const std::string&, const std::string&), (override));
+    MOCK_METHOD(bool, isPinSetup, (const std::string&), (const, override));
+    MOCK_METHOD(bool, validatePin, (const std::string&, const std::string&), (const, override));
+    MOCK_METHOD(bool, setPin, (const std::string&, const std::string&), (override));
+
 };
 
 class MockKeypad : public Keypad {

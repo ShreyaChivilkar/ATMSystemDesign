@@ -12,7 +12,7 @@ public:
     void addAccount(const std::string& accountNum, const std::string& pin, bool isPinSet = true);
     bool hasPin(const std::string& accountNum) const;
     std::string getPin(const std::string& accountNum) const;
-
+    bool updatePin(const std::string& accountNum, const std::string& pin);
     void populateDummyData();
 
 private:

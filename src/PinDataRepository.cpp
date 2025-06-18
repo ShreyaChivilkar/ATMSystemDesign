@@ -17,6 +17,16 @@ std::string PinDataRepository::getPin(const std::string& accountNum) const {
     return "";
 }
 
+bool PinDataRepository::updatePin(const std::string& accountNum, const std::string& pin) {
+    auto it = pinDatabase_.find(accountNum);
+    if (it != pinDatabase_.end()) {
+        it->second.pin = pin;
+        it->second.isPinSet = true;
+        return true;
+    }
+    return false;
+}
+
 //we would have the code to connect with actual db here 
 void PinDataRepository::populateDummyData() {
     addAccount("ACC123", "", false);    

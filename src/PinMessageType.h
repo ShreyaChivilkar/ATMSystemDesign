@@ -13,5 +13,10 @@ enum class PinMessageType {
     PinFailure,
     MaximumRetriesExceeded,
     AccessDenied,
-    PinNotSet
+    PinNotSet,
+    PromptPinSetup,
+    PromptPinConfirmation,
+    PinSetupSuccess,
+    PinSetupFailure,
+    PinMismatch
 };

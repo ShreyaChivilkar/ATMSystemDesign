@@ -4,11 +4,12 @@
 
 class PinServiceImpl : public PinService {
 public:
-    explicit PinServiceImpl(const PinDataRepository* repository);
+    explicit PinServiceImpl(PinDataRepository* repository);
     
-    bool isPinSetup(const std::string& accountNum) override;
-    bool validatePin(const std::string& accountNum, const std::string& pin) override;
+    bool isPinSetup(const std::string& accountNum) const override;
+    bool validatePin(const std::string& accountNum, const std::string& pin) const override;
+    bool setPin(const std::string& accountNum, const std::string& newPin) override;
 
 private:
-    const PinDataRepository* repository_; 
+    PinDataRepository* repository_; 
 };

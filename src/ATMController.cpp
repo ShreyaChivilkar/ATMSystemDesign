@@ -98,7 +98,26 @@ void ATMController::run() {
 
             case ATMState::NoPinSet: {
                 messageService_->showMessage(presenter_->getMessage(PinMessageType::PinNotSet));
-                state = ATMState::Exit;
+
+                messageService_->showMessage(presenter_->getMessage(PinMessageType::PromptPinSetup));
+                const std::string newPin = keypad_->getInput();
+
+                messageService_->showMessage(presenter_->getMessage(PinMessageType::PromptPinConfirmation));
+                const std::string confirmPin = keypad_->getInput();
+
+                if (newPin == confirmPin) {
+                    if (pinService_->setPin(accountNum, newPin)) {
+                        messageService_->showMessage(presenter_->getMessage(PinMessageType::PinSetupSuccess));
+                        state = ATMState::AccessGranted;
+                    } else {
+                        messageService_->showMessage(presenter_->getMessage(PinMessageType::PinSetupFailure));
+                        state = ATMState::Exit;
+                    }
+                } else {
+                    messageService_->showMessage(presenter_->getMessage(PinMessageType::PinMismatch));
+                    state = ATMState::Exit;
+                }
+
                 break;
             }
 
