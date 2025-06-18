@@ -17,7 +17,7 @@ TEST_F(ATMControllerTest, SuccessfulLoginFlow) {
     EXPECT_CALL(*messageServicePtr, showMessage("Please enter your PIN:"));
     EXPECT_CALL(*keypadPtr, getInput()).WillOnce(Return("1234"));
 
-    EXPECT_CALL(*presenterPtr, getMessage(PinMessageType::PromptUerConfirmation, ""))
+    EXPECT_CALL(*presenterPtr, getMessage(PinMessageType::PromptUserConfirmation, ""))
         .WillOnce(Return("Press Y to accept or N to cancel:"));
     EXPECT_CALL(*messageServicePtr, showMessage("Press Y to accept or N to cancel:"));
     EXPECT_CALL(*keypadPtr, getConfirmation()).WillOnce(Return("Y"));
@@ -68,7 +68,7 @@ TEST_F(ATMControllerTest, WrongPin_ShowsFailureAndRetry) {
     EXPECT_CALL(*messageServicePtr, showMessage("Please enter your PIN:")).Times(3);
 
     EXPECT_CALL(*keypadPtr, getInput()).Times(3).WillRepeatedly(Return("0000"));
-    EXPECT_CALL(*presenterPtr, getMessage(PinMessageType::PromptUerConfirmation, ""))
+    EXPECT_CALL(*presenterPtr, getMessage(PinMessageType::PromptUserConfirmation, ""))
         .Times(3).WillRepeatedly(Return("Please confirm to proceed with the transaction: Accept -> Y / Cancel -> N"));
     EXPECT_CALL(*messageServicePtr, showMessage("Please confirm to proceed with the transaction: Accept -> Y / Cancel -> N"))
         .Times(3);

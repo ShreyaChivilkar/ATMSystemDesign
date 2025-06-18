@@ -5,7 +5,7 @@ enum class PinMessageType {
     CardReadSuccess,
     CardReadFailure,
     PromptPinEntry,
-    PromptUerConfirmation,
+    PromptUserConfirmation,
     PinEntryCanceled,
     InvalidConfirmation,
     PinSuccess,

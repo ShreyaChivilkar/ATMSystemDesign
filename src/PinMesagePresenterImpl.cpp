@@ -10,7 +10,7 @@ std::string PinMessagePresenterImpl::getMessage(PinMessageType type, const std::
             return "Card read failed. Please try again.";
         case PinMessageType::PromptPinEntry:
             return "Please enter your PIN:";
-        case PinMessageType::PromptUerConfirmation:
+        case PinMessageType::PromptUserConfirmation:
             return "Please confirm to proceed with the transaction: Accept -> Y / Cancel -> N";
         case PinMessageType::PinEntryCanceled:
             return "PIN entry canceled.";

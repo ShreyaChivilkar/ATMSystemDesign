@@ -16,7 +16,6 @@ void ATMController::run() {
     std::string accountNum;
     std::string enteredPin;
     int retryCount = 0;
-    const int MAX_RETRIES = 2;
 
     while (state != ATMState::Exit) {
         switch (state) {
@@ -51,11 +50,11 @@ void ATMController::run() {
             }
 
             case ATMState::PinConfirm: {
-                messageService_->showMessage(presenter_->getMessage(PinMessageType::PromptUerConfirmation));
+                messageService_->showMessage(presenter_->getMessage(PinMessageType::PromptUserConfirmation));
                 const std::string confirmation = keypad_->getConfirmation();
-                if (confirmation == "Y") {
+                if (confirmation == CONFIRM_YES) {
                     state = ATMState::Validating;
-                } else if (confirmation == "N") {
+                } else if (confirmation == CONFIRM_NO) {
                     messageService_->showMessage(presenter_->getMessage(PinMessageType::PinEntryCanceled));
                     state = ATMState::PinPrompt;
                 } else {
@@ -86,7 +85,7 @@ void ATMController::run() {
             case ATMState::AccessDenied: {
                 messageService_->showMessage(presenter_->getMessage(PinMessageType::PinFailure));
                 retryCount++;
-                if (retryCount > MAX_RETRIES) {
+                if (retryCount > MAX_PIN_RETRIES) {
                     messageService_->showMessage(presenter_->getMessage(PinMessageType::MaximumRetriesExceeded));
                     state = ATMState::Exit;
                 } else {
@@ -106,13 +105,25 @@ void ATMController::run() {
                 const std::string confirmPin = keypad_->getInput();
 
                 if (newPin == confirmPin) {
-                    if (pinService_->setPin(accountNum, newPin)) {
-                        messageService_->showMessage(presenter_->getMessage(PinMessageType::PinSetupSuccess));
-                        state = ATMState::AccessGranted;
+                    messageService_->showMessage(presenter_->getMessage(PinMessageType::PromptUserConfirmation));
+                    const std::string confirmation = keypad_->getConfirmation();
+
+                    if (confirmation == CONFIRM_YES) {
+                        if (pinService_->setPin(accountNum, newPin)) {
+                            messageService_->showMessage(presenter_->getMessage(PinMessageType::PinSetupSuccess));
+                            state = ATMState::AccessGranted;
+                        } else {
+                            messageService_->showMessage(presenter_->getMessage(PinMessageType::PinSetupFailure));
+                            state = ATMState::Exit;
+                        }
+                    } else if (confirmation == CONFIRM_NO) {
+                        messageService_->showMessage(presenter_->getMessage(PinMessageType::PinEntryCanceled));
+                        state = ATMState::NoPinSet;
                     } else {
-                        messageService_->showMessage(presenter_->getMessage(PinMessageType::PinSetupFailure));
+                        messageService_->showMessage(presenter_->getMessage(PinMessageType::InvalidConfirmation));
                         state = ATMState::Exit;
                     }
+
                 } else {
                     messageService_->showMessage(presenter_->getMessage(PinMessageType::PinMismatch));
                     state = ATMState::Exit;
@@ -120,6 +131,7 @@ void ATMController::run() {
 
                 break;
             }
+
 
             case ATMState::Error: {
                 messageService_->showMessage(presenter_->getMessage(PinMessageType::CardReadFailure));
