@@ -39,7 +39,7 @@ public:
 
 class MockMessageService : public MessageServiceInterface {
 public:
-    MOCK_METHOD(void, showMessage, (const std::string&), (override));
+    MOCK_METHOD(void, showMessage, (const std::string&), (const, override));
 };
 
 // --------- Test Case ---------
@@ -139,71 +139,6 @@ TEST(ATMControllerTest, PinNotSet_ShowsPinNotSetMessage) {
     controller.run();
 }
 
-// TEST(ATMControllerTest, WrongPin_ShowsFailure) {
-//     auto reader = std::make_shared<MockCardReader>();
-//     auto pinService = std::make_shared<MockPinService>();
-//     auto keypad = std::make_shared<MockKeypad>();
-//     auto presenter = std::make_shared<MockPinMessagePresenter>();
-//     auto messageService = std::make_shared<MockMessageService>();
-
-//     ATMController controller(reader, pinService, keypad, presenter, messageService);
-
-//     // 1. Welcome message
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::WelcomeMessage, "")).
-//         WillOnce(Return("ATM System Started. Welcome! Please tap your card"));
-//     EXPECT_CALL(*messageService, showMessage("ATM System Started. Welcome! Please tap your card"));
-
-//     // 2. Card read
-//     EXPECT_CALL(*reader, readCard()).WillOnce(Return(std::make_pair(true, "ACC123")));
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::CardReadSuccess, "ACC123"))
-//         .WillOnce(Return("Card read successfully: ACC123"));
-//     EXPECT_CALL(*messageService, showMessage("Card read successfully: ACC123"));
-
-//     // 3. PIN is set
-//     EXPECT_CALL(*pinService, isPinSetup("ACC123")).WillOnce(Return(true));
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::PromptPinEntry, ""))
-//         .WillOnce(Return("Please enter your PIN:"));
-//     EXPECT_CALL(*messageService, showMessage("Please enter your PIN:"));
-
-//     // 4. PIN entry and confirmation
-//     EXPECT_CALL(*keypad, getInput()).WillOnce(Return("0000"));
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::PromptUerConfirmation, ""))
-//         .WillOnce(Return("Please confirm to proceed with the transaction: Accept -> Y / Cancel -> N"));
-//     EXPECT_CALL(*messageService, showMessage("Please confirm to proceed with the transaction: Accept -> Y / Cancel -> N"));
-//     EXPECT_CALL(*keypad, getConfirmation()).WillOnce(Return("Y"));
-    
-//     // 5. PIN validation fails
-//     EXPECT_CALL(*pinService, validatePin("ACC123", "0000")).WillOnce(Return(false));
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::PinFailure, ""))
-//         .WillOnce(Return("Incorrect PIN."));
-//     EXPECT_CALL(*messageService, showMessage("Incorrect PIN."));
-
-//     // 6. Access denied
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::AccessDenied, ""))
-//     .WillOnce(Return("Access denied. Please try again."));
-//     EXPECT_CALL(*messageService, showMessage("Access denied. Please try again."));
-
-//      // 7. Show Prompt again (2nd attempt)
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::PromptPinEntry, ""))
-//         .WillOnce(Return("Please enter your PIN:"));
-//     EXPECT_CALL(*messageService, showMessage("Please enter your PIN:"));
-//     EXPECT_CALL(*keypad, getInput()).WillOnce(Return("0000"));
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::PromptUerConfirmation, ""))
-//         .WillOnce(Return("Press Y to accept or N to cancel:"));
-//     EXPECT_CALL(*messageService, showMessage("Press Y to accept or N to cancel:"));
-//     EXPECT_CALL(*keypad, getConfirmation()).WillOnce(Return("Y"));
-//     EXPECT_CALL(*pinService, validatePin("ACC123", "0000")).WillOnce(Return(false));
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::PinFailure, ""))
-//         .WillOnce(Return("Incorrect PIN. Try again."));
-//     EXPECT_CALL(*messageService, showMessage("Incorrect PIN. Try again."));
-
-//     // 8. MAX_RETRIES reached → show final message and exit
-//     EXPECT_CALL(*presenter, getMessage(PinMessageType::MaximumRetriesExceeded, ""))
-//         .WillOnce(Return("Maximum retries exceeded."));
-//     EXPECT_CALL(*messageService, showMessage("Maximum retries exceeded."));
-
-//     controller.run();
-// }
 
 
 TEST(ATMControllerTest, WrongPin_ShowsFailure) {

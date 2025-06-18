@@ -4,5 +4,5 @@
 
 class MessageServiceImpl : public MessageServiceInterface {
 public:
-    void showMessage(const std::string& msg) override;
+    void showMessage(const std::string& msg) const override;
 };
