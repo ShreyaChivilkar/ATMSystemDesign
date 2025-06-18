@@ -1,15 +1,15 @@
 #include "ATMController.h"
 
-ATMController::ATMController(std::shared_ptr<CardReader> reader,
-                             std::shared_ptr<PinService> pinService,
-                             std::shared_ptr<Keypad> keypad,
-                             std::shared_ptr<PinMessagePresenter> presenter,
-                             std::shared_ptr<MessageServiceInterface> messageService)
-    : reader_(reader),
-      pinService_(pinService),
-      keypad_(keypad),
-      presenter_(presenter),
-      messageService_(messageService) {}
+ATMController::ATMController(std::unique_ptr<CardReader> reader,
+                             std::unique_ptr<PinService> pinService,
+                             std::unique_ptr<Keypad> keypad,
+                             std::unique_ptr<PinMessagePresenter> presenter,
+                             std::unique_ptr<MessageServiceInterface> messageService)
+    : reader_(std::move(reader)),
+      pinService_(std::move(pinService)),
+      keypad_(std::move(keypad)),
+      presenter_(std::move(presenter)),
+      messageService_(std::move(messageService)) {}
 
 void ATMController::run() {
     ATMState state = ATMState::Idle;
@@ -23,7 +23,7 @@ void ATMController::run() {
             case ATMState::Idle: {
                 messageService_->showMessage(presenter_->getMessage(PinMessageType::WelcomeMessage));
 
-                auto [cardValid, acct] = reader_->readCard();
+                const auto [cardValid, acct] = reader_->readCard();
                 if (cardValid) {
                     accountNum = acct;
                     state = ATMState::CardRead;
@@ -52,7 +52,7 @@ void ATMController::run() {
 
             case ATMState::PinConfirm: {
                 messageService_->showMessage(presenter_->getMessage(PinMessageType::PromptUerConfirmation));
-                std::string confirmation = keypad_->getConfirmation();
+                const std::string confirmation = keypad_->getConfirmation();
                 if (confirmation == "Y") {
                     state = ATMState::Validating;
                 } else if (confirmation == "N") {

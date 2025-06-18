@@ -12,19 +12,20 @@
 
 
 class ATMController {
+
 public:
-    ATMController(std::shared_ptr<CardReader> reader,
-                  std::shared_ptr<PinService> pinService,
-                  std::shared_ptr<Keypad> keypad,
-                  std::shared_ptr<PinMessagePresenter> presenter,
-                  std::shared_ptr<MessageServiceInterface> messageService);
+    ATMController(std::unique_ptr<CardReader> reader,
+                  std::unique_ptr<PinService> pinService,
+                  std::unique_ptr<Keypad> keypad,
+                  std::unique_ptr<PinMessagePresenter> presenter,
+                  std::unique_ptr<MessageServiceInterface> messageService);
 
     void run();
 
 private:
-    std::shared_ptr<CardReader> reader_;
-    std::shared_ptr<PinService> pinService_;
-    std::shared_ptr<Keypad> keypad_;
-    std::shared_ptr<PinMessagePresenter> presenter_;
-    std::shared_ptr<MessageServiceInterface> messageService_;
+    std::unique_ptr<CardReader> reader_;
+    std::unique_ptr<PinService> pinService_;
+    std::unique_ptr<Keypad> keypad_;
+    std::unique_ptr<PinMessagePresenter> presenter_;
+    std::unique_ptr<MessageServiceInterface> messageService_;
 };

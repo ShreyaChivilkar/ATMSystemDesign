@@ -15,7 +15,7 @@ public:
     bool isPinSetup(const std::string&) override { return true; }
     bool validatePin(const std::string&, const std::string&) override {
         std::cout << "[Stub] validatePin called\n";
-        return false;
+        return true;
     }
 };
 
@@ -30,13 +30,19 @@ public:
  * @returns Exit status of the application
  */
 int main() {
-    auto messageService = std::make_shared<MessageServiceImpl>();
-    auto reader = std::make_shared<CardReaderImpl>();
-    auto pinService = std::make_shared<PinServiceStub>();
-    auto keypad = std::make_shared<KeypadImpl>();
-    auto presenter = std::make_shared<PinMessagePresenterImpl>();
+    auto messageService = std::make_unique<MessageServiceImpl>();
+    auto reader = std::make_unique<CardReaderImpl>();
+    auto pinService = std::make_unique<PinServiceStub>();
+    auto keypad = std::make_unique<KeypadImpl>();
+    auto presenter = std::make_unique<PinMessagePresenterImpl>();
 
-    ATMController controller(reader, pinService, keypad, presenter, messageService);
+    ATMController controller(
+        std::move(reader),
+        std::move(pinService),
+        std::move(keypad),
+        std::move(presenter),
+        std::move(messageService)
+    );
 
     controller.run();
 

@@ -7,7 +7,7 @@
 
 class KeypadImpl : public Keypad {
 public:
-    std::string getInput() override;
-    std::string getConfirmation() override;
+    std::string getInput() const override;
+    std::string getConfirmation() const override;
 };
 
