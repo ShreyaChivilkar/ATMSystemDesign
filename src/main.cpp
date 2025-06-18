@@ -15,7 +15,7 @@ public:
     bool isPinSetup(const std::string&) override { return true; }
     bool validatePin(const std::string&, const std::string&) override {
         std::cout << "[Stub] validatePin called\n";
-        return true;
+        return false;
     }
 };
 

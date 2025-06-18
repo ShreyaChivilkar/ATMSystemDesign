@@ -16,7 +16,7 @@ void ATMController::run() {
     std::string accountNum;
     std::string enteredPin;
     int retryCount = 0;
-    const int MAX_RETRIES = 3;
+    const int MAX_RETRIES = 2;
 
     while (state != ATMState::Exit) {
         switch (state) {
@@ -86,7 +86,7 @@ void ATMController::run() {
             case ATMState::AccessDenied: {
                 messageService_->showMessage(presenter_->getMessage(PinMessageType::PinFailure));
                 retryCount++;
-                if (retryCount >= MAX_RETRIES) {
+                if (retryCount > MAX_RETRIES) {
                     messageService_->showMessage(presenter_->getMessage(PinMessageType::MaximumRetriesExceeded));
                     state = ATMState::Exit;
                 } else {

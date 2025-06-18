@@ -229,31 +229,31 @@ TEST(ATMControllerTest, WrongPin_ShowsFailure) {
     // 3. PIN is set
     EXPECT_CALL(*pinService, isPinSetup("ACC123")).WillOnce(Return(true));
     EXPECT_CALL(*presenter, getMessage(PinMessageType::PromptPinEntry, ""))
-        .Times(2)  // Shown twice due to two attempts
+        .Times(3) 
         .WillRepeatedly(Return("Please enter your PIN:"));
-    EXPECT_CALL(*messageService, showMessage("Please enter your PIN:")).Times(2);
+    EXPECT_CALL(*messageService, showMessage("Please enter your PIN:")).Times(3);
 
     // 4. PIN entry & confirmation for first attempt
-    EXPECT_CALL(*keypad, getInput()).Times(2).WillRepeatedly(Return("0000"));
+    EXPECT_CALL(*keypad, getInput()).Times(3).WillRepeatedly(Return("0000"));
     EXPECT_CALL(*presenter, getMessage(PinMessageType::PromptUerConfirmation, ""))
-        .Times(2)
+        .Times(3)
         .WillRepeatedly(Return("Please confirm to proceed with the transaction: Accept -> Y / Cancel -> N"));
     EXPECT_CALL(*messageService, showMessage("Please confirm to proceed with the transaction: Accept -> Y / Cancel -> N"))
-        .Times(2);
+        .Times(3);
     EXPECT_CALL(*keypad, getConfirmation()).Times(3).WillRepeatedly(Return("Y"));
 
     // 5. Both attempts fail
     EXPECT_CALL(*pinService, validatePin("ACC123", "0000")).Times(3).WillRepeatedly(Return(false));
     EXPECT_CALL(*presenter, getMessage(PinMessageType::PinFailure, ""))
-        .Times(2)
+        .Times(3)
         .WillRepeatedly(Return("Incorrect PIN."));
     EXPECT_CALL(*messageService, showMessage("Incorrect PIN.")).Times(3);
 
     // 6. After each failure → AccessDenied shown
     EXPECT_CALL(*presenter, getMessage(PinMessageType::AccessDenied, ""))
         .Times(2)
-        .WillOnce(Return("Access denied. Please try again."));
-    EXPECT_CALL(*messageService, showMessage("Access denied. Please try again."));
+        .WillRepeatedly(Return("Access denied. Please try again."));
+    EXPECT_CALL(*messageService, showMessage("Access denied. Please try again.")).Times(2);
 
     // 7. Max retries exceeded on 2nd fail
     EXPECT_CALL(*presenter, getMessage(PinMessageType::MaximumRetriesExceeded, ""))
