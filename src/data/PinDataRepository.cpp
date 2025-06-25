@@ -1,4 +1,4 @@
-#include "PinDataRepository.h"
+#include "data/PinDataRepository.h"
 
 void PinDataRepository::addAccount(const std::string& accountNum, const std::string& pin, bool isPinSet) {
     pinDatabase_[accountNum] = PinRecord{pin, isPinSet};

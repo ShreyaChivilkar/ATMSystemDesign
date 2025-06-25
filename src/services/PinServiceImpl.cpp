@@ -1,4 +1,4 @@
-#include "PinServiceImpl.h"
+#include "services/PinServiceImpl.h"
 
 PinServiceImpl::PinServiceImpl(PinDataRepository* repository)
     : repository_(repository) {}

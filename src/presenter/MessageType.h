@@ -1,6 +1,6 @@
 #pragma once
 
-enum class PinMessageType {
+enum class MessageType {
     WelcomeMessage,
     CardReadSuccess,
     CardReadFailure,
@@ -18,5 +18,15 @@ enum class PinMessageType {
     PromptPinConfirmation,
     PinSetupSuccess,
     PinSetupFailure,
-    PinMismatch
+    PinMismatch,
+
+    OperationMenu,
+    PromptWithdrawInput,
+    PromptDepositInput,
+    WithdrawSuccess,
+    WithdrawFailure,
+    DepositSuccess,
+    DepositFailure,
+    DisplayBalance,
+    InvalidSelection
 };

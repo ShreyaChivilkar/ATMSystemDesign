@@ -1,5 +1,5 @@
 #pragma once
-#include "MessageServiceInterface.h"
+#include "services/MessageServiceInterface.h"
 #include <iostream>
 
 class MessageServiceImpl : public MessageServiceInterface {

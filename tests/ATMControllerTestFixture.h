@@ -4,12 +4,12 @@
 #include <gmock/gmock.h>
 
 #include "ATMController.h"
-#include "CardReader.h"
-#include "PinService.h"
-#include "Keypad.h"
-#include "PinMessagePresenter.h"
-#include "MessageServiceInterface.h"
-#include "PinMessageType.h"
+#include "services/CardReader.h"
+#include "services/PinService.h"
+#include "services/Keypad.h"
+#include "presenter/MessagePresenter.h"
+#include "services/MessageServiceInterface.h"
+#include "presenter/MessageType.h"
 
 using ::testing::Return;
 
@@ -33,9 +33,9 @@ public:
     MOCK_METHOD(std::string, getConfirmation, (), (const, override));
 };
 
-class MockPinMessagePresenter : public PinMessagePresenter {
+class MockMessagePresenter : public MessagePresenter {
 public:
-    MOCK_METHOD(std::string, getMessage, (PinMessageType, const std::string&), (const, override));
+    MOCK_METHOD(std::string, getMessage, (MessageType, const std::string&), (const, override));
 };
 
 class MockMessageService : public MessageServiceInterface {
@@ -49,13 +49,13 @@ protected:
     std::unique_ptr<MockCardReader> reader;
     std::unique_ptr<MockPinService> pinService;
     std::unique_ptr<MockKeypad> keypad;
-    std::unique_ptr<MockPinMessagePresenter> presenter;
+    std::unique_ptr<MockMessagePresenter> presenter;
     std::unique_ptr<MockMessageService> messageService;
 
     MockCardReader* readerPtr;
     MockPinService* pinServicePtr;
     MockKeypad* keypadPtr;
-    MockPinMessagePresenter* presenterPtr;
+    MockMessagePresenter* presenterPtr;
     MockMessageService* messageServicePtr;
 
     std::unique_ptr<ATMController> controller;
@@ -70,7 +70,7 @@ protected:
         keypad = std::make_unique<MockKeypad>();
         keypadPtr = keypad.get();
 
-        presenter = std::make_unique<MockPinMessagePresenter>();
+        presenter = std::make_unique<MockMessagePresenter>();
         presenterPtr = presenter.get();
 
         messageService = std::make_unique<MockMessageService>();
@@ -86,7 +86,7 @@ protected:
     }
 
     void expectWelcomeMessage() {
-        EXPECT_CALL(*presenterPtr, getMessage(PinMessageType::WelcomeMessage, ""))
+        EXPECT_CALL(*presenterPtr, getMessage(MessageType::WelcomeMessage, ""))
             .WillOnce(Return("ATM System Started. Welcome! Please tap your card"));
         EXPECT_CALL(*messageServicePtr, showMessage("ATM System Started. Welcome! Please tap your card"));
     }
@@ -95,11 +95,11 @@ protected:
         EXPECT_CALL(*readerPtr, readCard()).WillOnce(Return(std::make_pair(success, accountNum)));
 
         if (success) {
-            EXPECT_CALL(*presenterPtr, getMessage(PinMessageType::CardReadSuccess, accountNum))
+            EXPECT_CALL(*presenterPtr, getMessage(MessageType::CardReadSuccess, accountNum))
                 .WillOnce(Return("Card read successful: " + accountNum));
             EXPECT_CALL(*messageServicePtr, showMessage("Card read successful: " + accountNum));
         } else {
-            EXPECT_CALL(*presenterPtr, getMessage(PinMessageType::CardReadFailure, ""))
+            EXPECT_CALL(*presenterPtr, getMessage(MessageType::CardReadFailure, ""))
                 .WillOnce(Return("Card read failed. Please try again."));
             EXPECT_CALL(*messageServicePtr, showMessage("Card read failed. Please try again."));
         }

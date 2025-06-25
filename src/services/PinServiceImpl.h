@@ -1,6 +1,6 @@
 #pragma once
-#include "PinService.h"
-#include "PinDataRepository.h"
+#include "services/PinService.h"
+#include "data/PinDataRepository.h"
 
 class PinServiceImpl : public PinService {
 public:
