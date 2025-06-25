@@ -6,7 +6,7 @@
 #include "presenter/MessageType.h"
 #include "states/ValidatingState.h"
 #include "states/PinPromptState.h"
-#include "constants/Constants.h"  // for CONFIRM_YES, CONFIRM_NO
+#include "constants/Constants.h" 
 
 class PinConfirmState : public ATMStateHandler {
 public:

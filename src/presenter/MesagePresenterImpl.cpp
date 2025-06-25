@@ -40,7 +40,7 @@ std::string MessagePresenterImpl::getMessage(MessageType type, const std::string
             return "PIN setup failed. Please contact support.";
             
         case MessageType::OperationMenu:
-            return "Choose Operation: 1-Withdraw, 2-Deposit, 3-View Balance, 0-Exit";
+            return "Choose Operation: 1-View Balance, 2-Deposit, 3-Withdraw, 0-Exit";
         case MessageType::PromptWithdrawInput:
             return "Enter amount to withdraw:";
         case MessageType::PromptDepositInput:

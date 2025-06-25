@@ -10,6 +10,7 @@ class PinService;
 class Keypad;
 class MessagePresenter;
 class MessageServiceInterface;
+class AccountService;
 
 class ATMController {
 public:
@@ -17,7 +18,8 @@ public:
                   std::unique_ptr<PinService> pinService,
                   std::unique_ptr<Keypad> keypad,
                   std::unique_ptr<MessagePresenter> presenter,
-                  std::unique_ptr<MessageServiceInterface> messageService);
+                  std::unique_ptr<MessageServiceInterface> messageService,
+                  std::unique_ptr<AccountService> accountService);
 
     void run();
 
@@ -27,4 +29,5 @@ private:
     std::unique_ptr<Keypad> keypad_;
     std::unique_ptr<MessagePresenter> presenter_;
     std::unique_ptr<MessageServiceInterface> messageService_;
+    std::unique_ptr<AccountService> accountService_;
 };

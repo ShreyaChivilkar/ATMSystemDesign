@@ -6,6 +6,7 @@
 #include "services/Keypad.h"
 #include "presenter/MessagePresenter.h"
 #include "services/MessageServiceInterface.h"
+#include "services/AccountService.h"
 
 struct ATMControllerContext {
     std::string accountNum;
@@ -17,4 +18,6 @@ struct ATMControllerContext {
     Keypad* keypad = nullptr;
     MessagePresenter* presenter = nullptr;
     MessageServiceInterface* messageService = nullptr;
+    AccountService* accountService = nullptr;
+
 };

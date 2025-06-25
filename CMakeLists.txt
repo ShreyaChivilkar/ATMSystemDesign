@@ -11,7 +11,8 @@ include_directories(
     src/services
     src/presenter
     src/data
-    src/constants)
+    src/constants
+    src/operations)
 
 # === Source files ===
 file(GLOB_RECURSE  SOURCES "src/*.cpp")

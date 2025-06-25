@@ -10,6 +10,8 @@
 #include "presenter/MessagePresenter.h"
 #include "services/MessageServiceInterface.h"
 #include "presenter/MessageType.h"
+#include "services/AccountService.h"
+
 
 using ::testing::Return;
 
@@ -25,6 +27,16 @@ public:
     MOCK_METHOD(bool, validatePin, (const std::string&, const std::string&), (const, override));
     MOCK_METHOD(bool, setPin, (const std::string&, const std::string&), (override));
 
+};
+
+class MockAccountService : public AccountService {
+public:
+    MOCK_METHOD(double, getBalance, (const std::string&), (const, override));
+    MOCK_METHOD(bool, withdraw,
+                (const std::string&, double, double&),      (override));
+
+    MOCK_METHOD(bool, deposit,
+                (const std::string&, double, double&),      (override));
 };
 
 class MockKeypad : public Keypad {
@@ -51,12 +63,14 @@ protected:
     std::unique_ptr<MockKeypad> keypad;
     std::unique_ptr<MockMessagePresenter> presenter;
     std::unique_ptr<MockMessageService> messageService;
+    std::unique_ptr<MockAccountService> accountService;
 
     MockCardReader* readerPtr;
     MockPinService* pinServicePtr;
     MockKeypad* keypadPtr;
     MockMessagePresenter* presenterPtr;
     MockMessageService* messageServicePtr;
+    MockAccountService* accountServicePtr;
 
     std::unique_ptr<ATMController> controller;
 
@@ -76,12 +90,16 @@ protected:
         messageService = std::make_unique<MockMessageService>();
         messageServicePtr = messageService.get();
 
+        accountService = std::make_unique<MockAccountService>();
+        accountServicePtr = accountService.get();
+
         controller = std::make_unique<ATMController>(
             std::move(reader),
             std::move(pinService),
             std::move(keypad),
             std::move(presenter),
-            std::move(messageService)
+            std::move(messageService),
+            std::move(accountService)
         );
     }
 
