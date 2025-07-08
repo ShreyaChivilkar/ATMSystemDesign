@@ -13,6 +13,7 @@ include_directories(
     src/data
     src/constants
     src/operations)
+include_directories(tests/mocks)
 
 # === Source files ===
 file(GLOB_RECURSE  SOURCES "src/*.cpp")

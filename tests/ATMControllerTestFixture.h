@@ -122,4 +122,39 @@ protected:
             EXPECT_CALL(*messageServicePtr, showMessage("Card read failed. Please try again."));
         }
     }
+
+    void expectSuccessfulLogin(const std::string& acct = "ACC456",
+                           const std::string& pin  = "5678") {
+        expectWelcomeMessage();
+        expectCardRead(true, acct);
+
+        EXPECT_CALL(*pinServicePtr, isPinSetup(acct))
+            .WillOnce(Return(true));
+
+        EXPECT_CALL(*presenterPtr,
+                    getMessage(MessageType::PromptPinEntry, ""))
+            .WillOnce(Return("Please enter your PIN:"));
+        EXPECT_CALL(*messageServicePtr,
+                    showMessage("Please enter your PIN:"));
+        EXPECT_CALL(*keypadPtr, getInput())          // PIN entry
+            .WillOnce(Return(pin));
+
+        EXPECT_CALL(*presenterPtr,
+                    getMessage(MessageType::PromptUserConfirmation, ""))
+            .WillOnce(Return("Press Y to accept or N to cancel:"));
+        EXPECT_CALL(*messageServicePtr,
+                    showMessage("Press Y to accept or N to cancel:"));
+        EXPECT_CALL(*keypadPtr, getConfirmation())
+            .WillOnce(Return("Y"));
+
+        EXPECT_CALL(*pinServicePtr, validatePin(acct, pin))
+            .WillOnce(Return(true));
+
+        EXPECT_CALL(*presenterPtr,
+                    getMessage(MessageType::PinSuccess, ""))
+            .WillOnce(Return("PIN correct. Access granted"));
+        EXPECT_CALL(*messageServicePtr,
+                    showMessage("PIN correct. Access granted"));
+}
+
 };

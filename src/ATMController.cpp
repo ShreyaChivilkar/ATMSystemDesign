@@ -24,6 +24,7 @@ void ATMController::run() {
         .accountService = accountService_.get()
     };
 
+    // shared pointer - if ctx gets passed out of atmcontroller it will be dangling
     std::unique_ptr<ATMStateHandler> state = std::make_unique<IdleState>();
 
     while (state) {

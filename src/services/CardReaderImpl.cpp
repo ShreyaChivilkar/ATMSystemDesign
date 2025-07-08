@@ -1,10 +1,9 @@
 #include "services/CardReaderImpl.h"
-#include <iostream>
 
 std::pair<bool, std::string> CardReaderImpl::readCard() {
     std::string input;
     std::cout << "Please enter account number: ";
-    std::getline(std::cin, input);
+    std::getline(in, input);
 
     if (!input.empty()) {
         return {true, input};
