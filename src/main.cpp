@@ -2,7 +2,7 @@
 #include "services/MessageServiceImpl.h"
 #include <iostream>
 #include <memory>
-#include "presenter/MessagePresenterImpl.h"
+#include "presenter/OutputScreenImpl.h"
 #include "services/CardReaderImpl.h"
 #include "services/KeypadImpl.h"
 #include "services/PinServiceImpl.h"
@@ -24,7 +24,7 @@ int main() {
     auto messageService = std::make_unique<MessageServiceImpl>();
     auto reader = std::make_unique<CardReaderImpl>();
     auto keypad = std::make_unique<KeypadImpl>();
-    auto presenter = std::make_unique<MessagePresenterImpl>();
+    auto presenter = std::make_unique<OutputScreenImpl>();
 
     ATMController controller(
         std::move(reader),

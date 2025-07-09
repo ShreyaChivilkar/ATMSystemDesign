@@ -3,7 +3,7 @@
 ATMController::ATMController(std::unique_ptr<CardReader> reader,
                              std::unique_ptr<PinService> pinService,
                              std::unique_ptr<Keypad> keypad,
-                             std::unique_ptr<MessagePresenter> presenter,
+                             std::unique_ptr<OutputScreen> presenter,
                              std::unique_ptr<MessageServiceInterface> messageService,
                              std::unique_ptr<AccountService> accountService)
     : reader_(std::move(reader)),

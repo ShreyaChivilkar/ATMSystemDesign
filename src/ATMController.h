@@ -8,7 +8,7 @@
 class CardReader;
 class PinService;
 class Keypad;
-class MessagePresenter;
+class OutputScreen;
 class MessageServiceInterface;
 class AccountService;
 
@@ -17,7 +17,7 @@ public:
     ATMController(std::unique_ptr<CardReader> reader,
                   std::unique_ptr<PinService> pinService,
                   std::unique_ptr<Keypad> keypad,
-                  std::unique_ptr<MessagePresenter> presenter,
+                  std::unique_ptr<OutputScreen> presenter,
                   std::unique_ptr<MessageServiceInterface> messageService,
                   std::unique_ptr<AccountService> accountService);
 
@@ -27,7 +27,7 @@ private:
     std::unique_ptr<CardReader> reader_;
     std::unique_ptr<PinService> pinService_;
     std::unique_ptr<Keypad> keypad_;
-    std::unique_ptr<MessagePresenter> presenter_;
+    std::unique_ptr<OutputScreen> presenter_;
     std::unique_ptr<MessageServiceInterface> messageService_;
     std::unique_ptr<AccountService> accountService_;
 };

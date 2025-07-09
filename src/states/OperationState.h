@@ -4,7 +4,7 @@
 #include "ATMControllerContext.h"
 #include "operations/OperationFactory.h"
 #include "operations/Operation.h"
-#include "presenter/MessageType.h"
+#include "presenter/OutputType.h"
 
 class OperationState : public ATMStateHandler {
 public:

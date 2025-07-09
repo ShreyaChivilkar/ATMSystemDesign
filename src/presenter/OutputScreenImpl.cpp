@@ -1,61 +1,61 @@
-#include "presenter/MessagePresenterImpl.h"
+#include "presenter/OutputScreenImpl.h"
 
-std::string MessagePresenterImpl::getMessage(MessageType type, const std::string& context) const {
+std::string OutputScreenImpl::getMessage(OutputType type, const std::string& context) const {
     switch (type) {
-        case  MessageType::WelcomeMessage:
+        case  OutputType::WelcomeMessage:
         return "ATM System Started. Welcome! Please tap your card";
-        case MessageType::CardReadSuccess:
+        case OutputType::CardReadSuccess:
             return "Card read successfully: " + context;
-        case MessageType::CardReadFailure:
+        case OutputType::CardReadFailure:
             return "Card read failed. Please try again.";
-        case MessageType::PromptPinEntry:
+        case OutputType::PromptPinEntry:
             return "Please enter your PIN:";
-        case MessageType::PromptUserConfirmation:
+        case OutputType::PromptUserConfirmation:
             return "Please confirm to proceed with the transaction: Accept -> Y / Cancel -> N";
-        case MessageType::PinEntryCanceled:
+        case OutputType::PinEntryCanceled:
             return "PIN entry canceled.";
-        case MessageType::InvalidConfirmation:
+        case OutputType::InvalidConfirmation:
             return "Invalid option. Please select: Accept -> Y / Cancel -> N.";
-        case MessageType::PinSuccess:
+        case OutputType::PinSuccess:
             return "PIN correct. Access granted.";
-        case MessageType::SelectOperation:
+        case OutputType::SelectOperation:
             return "Please select an operation: 1. Check Balance, 2. Withdraw, 3. Deposit, 4. Exit";
-        case MessageType::PinFailure:
+        case OutputType::PinFailure:
             return "Incorrect PIN.";
-        case MessageType::AccessDenied:
+        case OutputType::AccessDenied:
             return "Access denied. Please try again.";
-        case MessageType::MaximumRetriesExceeded:
+        case OutputType::MaximumRetriesExceeded:
             return "Maximum retries exceeded. Please try again later.";
-        case MessageType::PinNotSet:
+        case OutputType::PinNotSet:
             return "PIN not set yet.";
-        case MessageType::PromptPinSetup:
+        case OutputType::PromptPinSetup:
             return "Please set your new 4-digit PIN:";
-        case MessageType::PromptPinConfirmation:
+        case OutputType::PromptPinConfirmation:
             return "Please confirm your new PIN:";
-        case MessageType::PinMismatch:
+        case OutputType::PinMismatch:
             return "PINs do not match. Please try again.";
-        case MessageType::PinSetupSuccess:
+        case OutputType::PinSetupSuccess:
             return "PIN setup successful. You may now proceed.";
-        case MessageType::PinSetupFailure:
+        case OutputType::PinSetupFailure:
             return "PIN setup failed. Please contact support.";
             
-        case MessageType::OperationMenu:
+        case OutputType::OperationMenu:
             return "Choose Operation: 1-View Balance, 2-Deposit, 3-Withdraw, 0-Exit";
-        case MessageType::PromptWithdrawInput:
+        case OutputType::PromptWithdrawInput:
             return "Enter amount to withdraw:";
-        case MessageType::PromptDepositInput:
+        case OutputType::PromptDepositInput:
             return "Enter amount to deposit:";
-        case MessageType::WithdrawSuccess:
+        case OutputType::WithdrawSuccess:
             return "Withdraw successful. New Balance: $" + context;
-        case MessageType::WithdrawFailure:
+        case OutputType::WithdrawFailure:
             return "Withdraw failed. Insufficient balance.";
-        case MessageType::DepositSuccess:
+        case OutputType::DepositSuccess:
             return "Deposit successful. New Balance: $" + context;
-        case MessageType::DepositFailure:
+        case OutputType::DepositFailure:
             return "Deposit failed. Please try again.";
-        case MessageType::DisplayBalance:
+        case OutputType::DisplayBalance:
             return "Your current balance is: $" + context;
-        case MessageType::InvalidSelection:
+        case OutputType::InvalidSelection:
             return "Invalid operation choice. Please try again.";
         default:
             return "Unknown message.";

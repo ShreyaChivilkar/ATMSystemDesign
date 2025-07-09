@@ -2,7 +2,7 @@
 
 std::unique_ptr<ATMStateHandler> PinPromptState::handle(ATMControllerContext& ctx) {
     ctx.messageService->showMessage(
-        ctx.presenter->getMessage(MessageType::PromptPinEntry)
+        ctx.presenter->getMessage(OutputType::PromptPinEntry)
     );
 
     ctx.enteredPin = ctx.keypad->getInput();

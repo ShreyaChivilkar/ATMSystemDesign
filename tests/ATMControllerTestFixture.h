@@ -7,9 +7,9 @@
 #include "services/CardReader.h"
 #include "services/PinService.h"
 #include "services/Keypad.h"
-#include "presenter/MessagePresenter.h"
+#include "presenter/OutputScreen.h"
 #include "services/MessageServiceInterface.h"
-#include "presenter/MessageType.h"
+#include "presenter/OutputType.h"
 #include "services/AccountService.h"
 
 
@@ -45,9 +45,9 @@ public:
     MOCK_METHOD(std::string, getConfirmation, (), (const, override));
 };
 
-class MockMessagePresenter : public MessagePresenter {
+class MockOutputScreen : public OutputScreen {
 public:
-    MOCK_METHOD(std::string, getMessage, (MessageType, const std::string&), (const, override));
+    MOCK_METHOD(std::string, getMessage, (OutputType, const std::string&), (const, override));
 };
 
 class MockMessageService : public MessageServiceInterface {
@@ -61,14 +61,14 @@ protected:
     std::unique_ptr<MockCardReader> reader;
     std::unique_ptr<MockPinService> pinService;
     std::unique_ptr<MockKeypad> keypad;
-    std::unique_ptr<MockMessagePresenter> presenter;
+    std::unique_ptr<MockOutputScreen> presenter;
     std::unique_ptr<MockMessageService> messageService;
     std::unique_ptr<MockAccountService> accountService;
 
     MockCardReader* readerPtr;
     MockPinService* pinServicePtr;
     MockKeypad* keypadPtr;
-    MockMessagePresenter* presenterPtr;
+    MockOutputScreen* presenterPtr;
     MockMessageService* messageServicePtr;
     MockAccountService* accountServicePtr;
 
@@ -84,7 +84,7 @@ protected:
         keypad = std::make_unique<MockKeypad>();
         keypadPtr = keypad.get();
 
-        presenter = std::make_unique<MockMessagePresenter>();
+        presenter = std::make_unique<MockOutputScreen>();
         presenterPtr = presenter.get();
 
         messageService = std::make_unique<MockMessageService>();
@@ -104,7 +104,7 @@ protected:
     }
 
     void expectWelcomeMessage() {
-        EXPECT_CALL(*presenterPtr, getMessage(MessageType::WelcomeMessage, ""))
+        EXPECT_CALL(*presenterPtr, getMessage(OutputType::WelcomeMessage, ""))
             .WillOnce(Return("ATM System Started. Welcome! Please tap your card"));
         EXPECT_CALL(*messageServicePtr, showMessage("ATM System Started. Welcome! Please tap your card"));
     }
@@ -113,11 +113,11 @@ protected:
         EXPECT_CALL(*readerPtr, readCard()).WillOnce(Return(std::make_pair(success, accountNum)));
 
         if (success) {
-            EXPECT_CALL(*presenterPtr, getMessage(MessageType::CardReadSuccess, accountNum))
+            EXPECT_CALL(*presenterPtr, getMessage(OutputType::CardReadSuccess, accountNum))
                 .WillOnce(Return("Card read successful: " + accountNum));
             EXPECT_CALL(*messageServicePtr, showMessage("Card read successful: " + accountNum));
         } else {
-            EXPECT_CALL(*presenterPtr, getMessage(MessageType::CardReadFailure, ""))
+            EXPECT_CALL(*presenterPtr, getMessage(OutputType::CardReadFailure, ""))
                 .WillOnce(Return("Card read failed. Please try again."));
             EXPECT_CALL(*messageServicePtr, showMessage("Card read failed. Please try again."));
         }
@@ -132,7 +132,7 @@ protected:
             .WillOnce(Return(true));
 
         EXPECT_CALL(*presenterPtr,
-                    getMessage(MessageType::PromptPinEntry, ""))
+                    getMessage(OutputType::PromptPinEntry, ""))
             .WillOnce(Return("Please enter your PIN:"));
         EXPECT_CALL(*messageServicePtr,
                     showMessage("Please enter your PIN:"));
@@ -140,7 +140,7 @@ protected:
             .WillOnce(Return(pin));
 
         EXPECT_CALL(*presenterPtr,
-                    getMessage(MessageType::PromptUserConfirmation, ""))
+                    getMessage(OutputType::PromptUserConfirmation, ""))
             .WillOnce(Return("Press Y to accept or N to cancel:"));
         EXPECT_CALL(*messageServicePtr,
                     showMessage("Press Y to accept or N to cancel:"));
@@ -151,7 +151,7 @@ protected:
             .WillOnce(Return(true));
 
         EXPECT_CALL(*presenterPtr,
-                    getMessage(MessageType::PinSuccess, ""))
+                    getMessage(OutputType::PinSuccess, ""))
             .WillOnce(Return("PIN correct. Access granted"));
         EXPECT_CALL(*messageServicePtr,
                     showMessage("PIN correct. Access granted"));

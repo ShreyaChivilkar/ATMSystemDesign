@@ -3,7 +3,7 @@
 #include <memory>
 #include "states/ATMStateHandler.h"
 #include "ATMControllerContext.h"
-#include "presenter/MessageType.h"
+#include "presenter/OutputType.h"
 
 class ErrorState : public ATMStateHandler {
 public:

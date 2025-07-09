@@ -1,6 +1,6 @@
 #pragma once
 
-enum class MessageType {
+enum class OutputType {
     WelcomeMessage,
     CardReadSuccess,
     CardReadFailure,

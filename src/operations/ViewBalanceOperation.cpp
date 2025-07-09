@@ -5,7 +5,7 @@ bool ViewBalanceOperation::execute(ATMControllerContext& ctx) {
     double balance = ctx.accountService->getBalance(ctx.accountNum);
 
     ctx.messageService->showMessage(
-        ctx.presenter->getMessage(MessageType::DisplayBalance, std::to_string(balance))
+        ctx.presenter->getMessage(OutputType::DisplayBalance, std::to_string(balance))
     );
 
     return true; 

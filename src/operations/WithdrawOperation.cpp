@@ -3,7 +3,7 @@
 
 bool WithdrawOperation::execute(ATMControllerContext& ctx) {
     ctx.messageService->showMessage(
-        ctx.presenter->getMessage(MessageType::PromptWithdrawInput)
+        ctx.presenter->getMessage(OutputType::PromptWithdrawInput)
     );
     double amt = std::stod(ctx.keypad->getInput());
 
@@ -11,8 +11,8 @@ bool WithdrawOperation::execute(ATMControllerContext& ctx) {
     bool withdrawSuccessFlag = ctx.accountService->withdraw(ctx.accountNum, amt, newBal);
 
     ctx.messageService->showMessage(
-        ctx.presenter->getMessage(withdrawSuccessFlag ? MessageType::WithdrawSuccess
-                                     : MessageType::WithdrawFailure,
+        ctx.presenter->getMessage(withdrawSuccessFlag ? OutputType::WithdrawSuccess
+                                     : OutputType::WithdrawFailure,
                                   withdrawSuccessFlag ? std::to_string(newBal) : std::string{})
     );
     return true;          

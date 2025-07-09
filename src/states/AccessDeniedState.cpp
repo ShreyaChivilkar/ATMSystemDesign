@@ -1,14 +1,14 @@
 #include "states/AccessDeniedState.h"
  
 std::unique_ptr<ATMStateHandler> AccessDeniedState::handle(ATMControllerContext& ctx) {
-    ctx.messageService->showMessage(ctx.presenter->getMessage(MessageType::PinFailure));
+    ctx.messageService->showMessage(ctx.presenter->getMessage(OutputType::PinFailure));
     ctx.retryCount++;
 
     if (ctx.retryCount > MAX_PIN_RETRIES) {
-        ctx.messageService->showMessage(ctx.presenter->getMessage(MessageType::MaximumRetriesExceeded));
+        ctx.messageService->showMessage(ctx.presenter->getMessage(OutputType::MaximumRetriesExceeded));
         return nullptr; // exit the application
     } else {
-        ctx.messageService->showMessage(ctx.presenter->getMessage(MessageType::AccessDenied));
+        ctx.messageService->showMessage(ctx.presenter->getMessage(OutputType::AccessDenied));
         return std::make_unique<PinPromptState>();
     }
 }

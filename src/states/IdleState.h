@@ -7,7 +7,7 @@
 class IdleState : public ATMStateHandler {
 public:
     std::unique_ptr<ATMStateHandler> handle(ATMControllerContext& ctx) override {
-        ctx.messageService->showMessage(ctx.presenter->getMessage(MessageType::WelcomeMessage));
+        ctx.messageService->showMessage(ctx.presenter->getMessage(OutputType::WelcomeMessage));
         const auto [valid, acct] = ctx.reader->readCard();
         if (valid) {
             ctx.accountNum = acct;

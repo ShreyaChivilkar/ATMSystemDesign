@@ -2,7 +2,7 @@
 
 std::unique_ptr<ATMStateHandler> CardReadState::handle(ATMControllerContext& ctx) {
     ctx.messageService->showMessage(
-        ctx.presenter->getMessage(MessageType::CardReadSuccess, ctx.accountNum)
+        ctx.presenter->getMessage(OutputType::CardReadSuccess, ctx.accountNum)
     );
 
     if (ctx.pinService->isPinSetup(ctx.accountNum)) {

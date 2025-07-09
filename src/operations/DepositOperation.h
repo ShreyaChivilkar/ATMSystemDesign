@@ -1,7 +1,7 @@
 #pragma once
 #include "operations/Operation.h"
 #include "ATMControllerContext.h"
-#include "presenter/MessageType.h"
+#include "presenter/OutputType.h"
 
 class DepositOperation : public Operation {
 public:

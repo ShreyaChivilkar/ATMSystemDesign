@@ -4,7 +4,7 @@
 #include "services/CardReader.h"
 #include "services/PinService.h"
 #include "services/Keypad.h"
-#include "presenter/MessagePresenter.h"
+#include "presenter/OutputScreen.h"
 #include "services/MessageServiceInterface.h"
 #include "services/AccountService.h"
 
@@ -16,7 +16,7 @@ struct ATMControllerContext {
     CardReader* reader = nullptr;
     PinService* pinService = nullptr;
     Keypad* keypad = nullptr;
-    MessagePresenter* presenter = nullptr;
+    OutputScreen* presenter = nullptr;
     MessageServiceInterface* messageService = nullptr;
     AccountService* accountService = nullptr;
 

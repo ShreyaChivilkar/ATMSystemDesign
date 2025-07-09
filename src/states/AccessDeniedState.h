@@ -3,7 +3,7 @@
 #include <memory>
 #include "states/ATMStateHandler.h"
 #include "ATMControllerContext.h"
-#include "presenter/MessageType.h"
+#include "presenter/OutputType.h"
 #include "states/PinPromptState.h"
 #include "constants/Constants.h" 
 

@@ -2,7 +2,7 @@
 
 #include "Operation.h"
 #include "ATMControllerContext.h"
-#include "presenter/MessageType.h"
+#include "presenter/OutputType.h"
 
 class ViewBalanceOperation : public Operation {
 public:

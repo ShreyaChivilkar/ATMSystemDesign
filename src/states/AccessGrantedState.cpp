@@ -4,7 +4,7 @@
 std::unique_ptr<ATMStateHandler> AccessGrantedState::handle(ATMControllerContext& ctx) {
 
     ctx.messageService->showMessage(
-        ctx.presenter->getMessage(MessageType::PinSuccess)
+        ctx.presenter->getMessage(OutputType::PinSuccess)
     );
 
     return std::make_unique<OperationState>();

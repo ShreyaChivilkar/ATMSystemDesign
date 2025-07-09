@@ -3,7 +3,7 @@
 
 bool DepositOperation::execute(ATMControllerContext& ctx) {
     ctx.messageService->showMessage(
-        ctx.presenter->getMessage(MessageType::PromptDepositInput)
+        ctx.presenter->getMessage(OutputType::PromptDepositInput)
     );
     double amt = std::stod(ctx.keypad->getInput());
 
@@ -11,8 +11,8 @@ bool DepositOperation::execute(ATMControllerContext& ctx) {
     bool depositSuccessFlag = ctx.accountService->deposit(ctx.accountNum, amt, newBal);
 
     ctx.messageService->showMessage(
-        ctx.presenter->getMessage (depositSuccessFlag ? MessageType::DepositSuccess
-                                     : MessageType::DepositFailure,
+        ctx.presenter->getMessage (depositSuccessFlag ? OutputType::DepositSuccess
+                                     : OutputType::DepositFailure,
                                  depositSuccessFlag ? std::to_string(newBal) : std::string{})
     );
     return true;
